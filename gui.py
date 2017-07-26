@@ -60,6 +60,7 @@ class Gui(QtGui.QWidget):
         layout = self.layout()
         for timer in self.timer:
             timer.stop()
+        self.timer = []
         if layout is not None:
             QtGui.QWidget().setLayout(self.layout())
 
