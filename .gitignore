@@ -1,0 +1,11 @@
+*.out
+*.swp
+*.o
+*.dSYM
+*.aux
+*.log
+*.DS_store
+~*
+*.ods#
+*.pyc
+sandbox/*
