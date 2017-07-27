@@ -11,6 +11,7 @@ matplotlib.use('agg')
 from matplotlib import pyplot as plt
 from PyQt4 import QtCore, QtGui
 
+
 def toPixmap(img):
     try:
         h, w, c = img.shape
@@ -22,26 +23,30 @@ def toPixmap(img):
     pixmap = QtGui.QImage(img.data, w, h, c * w, QtGui.QImage.Format_RGB888)
     return QtGui.QPixmap.fromImage(pixmap)
 
+
 def Geometry(obj):
     height = obj.frameGeometry().height()
     width = obj.frameGeometry().width()
 
     return [height, width]
 
+
 def ChangeFigure(label1, label2, pixmap1, pixmap2):
-        idx = random.choice([0, 1])
-        if idx == 0:
-            label1.setPixmap(pixmap1)
-            label2.setPixmap(pixmap2)
-        else:
-            label1.setPixmap(pixmap2)
-            label2.setPixmap(pixmap1)
+    idx = random.choice([0, 1])
+    if idx == 0:
+        label1.setPixmap(pixmap1)
+        label2.setPixmap(pixmap2)
+    else:
+        label1.setPixmap(pixmap2)
+        label2.setPixmap(pixmap1)
+
 
 def ShowStereo(obj):
     obj.clearLayout()
     height, width = Geometry(obj)
     #lst = obj.getOpenFileNames()
-    lst = ['/Users/fu-en.wang/Desktop/Classroom1-imperfect/imL.png', '/Users/fu-en.wang/Desktop/Classroom1-imperfect/imR.png']
+    lst = ['/Users/fu-en.wang/Desktop/Classroom1-imperfect/imL.png',
+           '/Users/fu-en.wang/Desktop/Classroom1-imperfect/imR.png']
     if len(lst) != 2:
         print 'Image List Error!'
     else:
@@ -80,7 +85,8 @@ def ShowStereo(obj):
 
         timer = QtCore.QTimer(obj)
         obj.timer.append(timer)
-        timer.timeout.connect(functools.partial(ChangeFigure, l_label, r_label, l_pixmap, r_pixmap))
+        timer.timeout.connect(functools.partial(
+            ChangeFigure, l_label, r_label, l_pixmap, r_pixmap))
         timer.start(100)
 
 
@@ -88,7 +94,8 @@ def ShowDisparity(obj):
     obj.clearLayout()
     height, width = Geometry(obj)
     #lst = obj.getOpenFileNames()
-    lst = ['/Users/fu-en.wang/Desktop/Classroom1-imperfect/imL.png', '/Users/fu-en.wang/Desktop/Classroom1-imperfect/imR.png']
+    lst = ['/Users/fu-en.wang/Desktop/Classroom1-imperfect/imL.png',
+           '/Users/fu-en.wang/Desktop/Classroom1-imperfect/imR.png']
     if len(lst) != 2:
         print 'Image List Error!'
     else:
@@ -97,17 +104,17 @@ def ShowDisparity(obj):
 
         left = cv2.imread(left_name, cv2.IMREAD_COLOR)
         right = cv2.imread(right_name, cv2.IMREAD_COLOR)
-        
+
         left_gray = cv2.cvtColor(left, cv2.COLOR_BGR2GRAY)
         right_gray = cv2.cvtColor(right, cv2.COLOR_BGR2GRAY)
-        stereo = cv2.StereoBM(preset=0, ndisparities = 16, SADWindowSize = 5)
-        disparity = stereo.compute(left_gray, right_gray, disptype = cv2.CV_32FC1)
-
+        stereo = cv2.StereoBM(preset=0, ndisparities=16, SADWindowSize=5)
+        disparity = stereo.compute(
+            left_gray, right_gray, disptype=cv2.CV_32FC1)
 
         h, w, _ = left.shape
         toH = int(0.5 * height)
         toW = int(0.5 * width)
-        
+
         disparity[disparity == -1] = 0
         disparity /= (disparity.max() / 255.0)
         disparity = disparity.astype(np.uint8)
@@ -152,4 +159,3 @@ def ShowDisparity(obj):
         layout.setAlignment(QtCore.Qt.AlignTop)
         layout.addLayout(vlayout_top)
         layout.addLayout(vlayout_bot)
-

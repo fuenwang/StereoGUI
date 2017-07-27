@@ -1,24 +1,38 @@
 import sys
+import Demo
 import Stereo
 import functools
 from PyQt4 import QtCore, QtGui
 
 
 class Gui(QtGui.QWidget):
+
     def __init__(self):
         super(Gui, self).__init__()
         self.timer = []
+        self.menu = QtGui.QMenuBar(self)
         self._initGui()
         self._addMenu()
+        self._addDemoMenu()
         self._addTestMenu()
+
+    def _addDemoMenu(self):
+        demo = self.menu.addMenu('Demo')
+        videoAction = QtGui.QAction('Play Video', self)
+        videoAction.triggered.connect(
+            functools.partial(Demo.PlayFrame, obj=self))
+
+        demo.addAction(videoAction)
 
     def _addTestMenu(self):
         Test = self.menu.addMenu('Test')
         openAction = QtGui.QAction('Show Stereo Images', self)
-        openAction.triggered.connect(functools.partial(Stereo.ShowStereo, obj = self))
-        
+        openAction.triggered.connect(
+            functools.partial(Stereo.ShowStereo, obj=self))
+
         disparityAction = QtGui.QAction('Calculate Disparity', self)
-        disparityAction.triggered.connect(functools.partial(Stereo.ShowDisparity, obj = self))
+        disparityAction.triggered.connect(
+            functools.partial(Stereo.ShowDisparity, obj=self))
 
         Test.addAction(openAction)
         Test.addAction(disparityAction)
@@ -36,7 +50,6 @@ class Gui(QtGui.QWidget):
         screenshotAction = QtGui.QAction('Screenshot', self)
         screenshotAction.triggered.connect(self.saveScreenshot)
 
-        self.menu = QtGui.QMenuBar(self)
         File = self.menu.addMenu('File')
         File.addAction(openfileAction)
         File.addAction(screenshotAction)
@@ -51,7 +64,7 @@ class Gui(QtGui.QWidget):
         openfile = QtGui.QFileDialog.getOpenFileNames(self)
         openfile = [str(x) for x in openfile]
         return openfile
-    
+
     def getSaveFileName(self):
         savefile = QtGui.QFileDialog.getSaveFileName(self)
         return str(savefile)
