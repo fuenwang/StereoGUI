@@ -53,3 +53,39 @@ def PlayFrame(obj):
     timer.timeout.connect(functools.partial(
         PlayFrame_thread, label, frameMacro))
     timer.start(200)
+
+def CaptureWebcam_thread(label, capture, h, w):
+    img = capture.read()
+    img = cv2.resize(img[1], (w, h))
+    label.setPixmap(Stereo.toPixmap(img))
+
+def CaptureWebcam(obj):
+    obj.clearLayout()
+    h, w = Stereo.Geometry(obj)
+    try:
+        capture = cv2.VideoCapture(0)
+    except:
+        return 
+    layout = QtGui.QHBoxLayout(obj)
+    layout.setContentsMargins(0, 0, 0, 0)
+
+    label = QtGui.QLabel(obj)
+    layout.addWidget(label)
+    timer = QtCore.QTimer(obj)
+    timer.timeout.connect(functools.partial(CaptureWebcam_thread, label, capture, h, w))
+    obj.timer.append(timer)
+    timer.start(50)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

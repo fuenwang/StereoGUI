@@ -22,7 +22,11 @@ class Gui(QtGui.QWidget):
         videoAction.triggered.connect(
             functools.partial(Demo.PlayFrame, obj=self))
 
+        webcamAction = QtGui.QAction('Webcam', self)
+        webcamAction.triggered.connect(functools.partial(Demo.CaptureWebcam, obj=self))
+
         demo.addAction(videoAction)
+        demo.addAction(webcamAction)
 
     def _addTestMenu(self):
         Test = self.menu.addMenu('Test')
