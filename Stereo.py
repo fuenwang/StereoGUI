@@ -93,9 +93,9 @@ def ShowStereo(obj):
 def ShowDisparity(obj):
     obj.clearLayout()
     height, width = Geometry(obj)
-    #lst = obj.getOpenFileNames()
-    lst = ['/Users/fu-en.wang/Desktop/Classroom1-imperfect/imL.png',
-           '/Users/fu-en.wang/Desktop/Classroom1-imperfect/imR.png']
+    lst = obj.getOpenFileNames()
+    #lst = ['/Users/fu-en.wang/Desktop/Classroom1-imperfect/imL.png',
+    #       '/Users/fu-en.wang/Desktop/Classroom1-imperfect/imR.png']
     if len(lst) != 2:
         print 'Image List Error!'
     else:
@@ -118,7 +118,8 @@ def ShowDisparity(obj):
         disparity[disparity == -1] = 0
         disparity /= (disparity.max() / 255.0)
         disparity = disparity.astype(np.uint8)
-        disparity_bone = cv2.applyColorMap(disparity, cv2.COLORMAP_BONE)
+        #disparity_bone = cv2.applyColorMap(disparity, cv2.COLORMAP_BONE)
+        disparity_bone = disparity
         disparity_winter = cv2.applyColorMap(disparity, cv2.COLORMAP_AUTUMN)
 
         left = cv2.resize(left, (toW, toH))
